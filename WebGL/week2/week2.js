@@ -46,7 +46,7 @@ var week2 = (function(jQuery, ko){
 
         // Setup the canvas
         gl.viewport(0, 0, canvas.width, canvas.height);
-        gl.clearColor(0,0,0,0 );
+        gl.clearColor(0.0 ,0.0 ,0.0 ,1.0);
 
         // Setup the shaders
         program = initShaders(gl, "vertex-shader", "fragment-shader");
