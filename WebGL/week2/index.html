@@ -28,7 +28,7 @@
     </div>
 
     <div class="form-group">
-        <label>Rotation (degrees)</label>
+        <label>Twist (degrees)</label>
         <input type="text" class="form-control" data-bind="value: rotation" />
     </div>
 
@@ -48,15 +48,16 @@ void
 main()
 {
     gl_Position = vPosition;
-    /*
-    float s = sin( theta );
-    float c = cos( theta );
 
-    gl_Position.x = -s * vPosition.x + c * vPosition.y;
-    gl_Position.y =  s * vPosition.y + c * vPosition.x;
+    float d = sqrt( vPosition.x * vPosition.x + vPosition.y * vPosition.y );
+    float s = sin( d * theta );
+    float c = cos( d * theta );
+
+    gl_Position.x =  vPosition.x * c - vPosition.y * s;
+    gl_Position.y =  vPosition.x * s + vPosition.y * c;
     gl_Position.z = 0.0;
-    gl_Position.w = 1.0;
-    */
+    gl_Position.w = 2.0;
+
 }
 </script>
 

@@ -13,7 +13,6 @@ var week2 = (function(jQuery, ko){
         canvas,
         program,
         points = [],
-        rotatedPoints = [],
         vertices,
         theta;
 
@@ -56,9 +55,9 @@ var week2 = (function(jQuery, ko){
 
         // Define the initial vertices
         vertices = [
-            vec2(-0.5, -0.5),
-            vec2(0, 0.5),
-            vec2(0.5, -0.5)
+            vec2(-1, -1),
+            vec2(0, 1),
+            vec2(1, -1)
         ];
 
         createData();
@@ -70,15 +69,14 @@ var week2 = (function(jQuery, ko){
     // Create the data
     function createData() {
 
+        // Clear out the points for every rerender
         points = [];
 
         // Create the vertices
         divideTriangle(vertices[0], vertices[1], vertices[2], parseInt(_self.subDivisions()));
 
-        // Rotate the points
-        rotateThePoints();
-
-
+        // Push the data to the GPU buffer object
+        pushGPU();
     }
 
 
@@ -90,7 +88,7 @@ var week2 = (function(jQuery, ko){
         // Create the buffer
         var bufferId = gl.createBuffer();
         gl.bindBuffer(gl.ARRAY_BUFFER, bufferId);
-        gl.bufferData(gl.ARRAY_BUFFER, flatten(rotatedPoints), gl.STATIC_DRAW);
+        gl.bufferData(gl.ARRAY_BUFFER, flatten(points), gl.STATIC_DRAW);
 
         // Create the vPosition
         var vPosition = gl.getAttribLocation(program, "vPosition");
@@ -98,12 +96,10 @@ var week2 = (function(jQuery, ko){
         gl.enableVertexAttribArray(vPosition);
 
         // Create the theta
-        gl.getUniformLocation(program, "theta");
-
+        theta = gl.getUniformLocation(program, "theta");
 
         // Render
         render();
-
     }
 
 
@@ -142,45 +138,13 @@ var week2 = (function(jQuery, ko){
 
 
 
-    function rotateThePoints() {
-
-        rotatedPoints = [];
-
-
-        for (var i= 0, len=points.length; i<len; i++) {
-            var newPoint = rotatePoints(points[i][0], points[i][1], parseFloat(_self.rotation()));
-            rotatedPoints[i] = [newPoint.x, newPoint.y];
-        }
-
-
-        // Push the data to the gpu and render
-        pushGPU();
-
-    }
-
-
-
-
-
-    function rotatePoints(x,y,angle){
-        var point = {};
-        var distance = Math.sqrt(x * x + y * y);
-        point.x = x * Math.cos(angle * distance)- y * Math.sin(angle * distance);
-        point.y = x * Math.sin(angle * distance) + y * Math.cos(angle * distance);
-        return point;
-    }
-
-
-
-
-
     // Render
     function render() {
         console.log('Rendering');
         gl.clear( gl.COLOR_BUFFER_BIT );
 
         // Send theta
-        //gl.uniform1f(theta, _self.rotation());
+        gl.uniform1f(theta, parseFloat(_self.rotation()));
 
         // Draw the array
         gl.drawArrays( gl.TRIANGLES, 0, points.length);
