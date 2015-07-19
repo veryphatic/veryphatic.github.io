@@ -113,9 +113,12 @@ var week2 = (function(jQuery, ko){
 
 
     // Divide the triange
-    function divideTriangle(a, b, c, count, rotation) {
+    function divideTriangle(a, b, c, count) {
+
         // Check for end of recursion
         if (count === 0) {
+
+
 
             createNewPoint(a, b, c);
         }
@@ -134,14 +137,18 @@ var week2 = (function(jQuery, ko){
 
             // Rotate
 
+            //x′= xcosθ − ysinθ
+            //y′= xsinθ + ycosθ
+
+
             var ax = ab[0] * _cos - ab[1] * _sin;
-            var ay = ab[1] * _sin + ab[1] * _cos;
+            var ay = ab[0] * _sin + ab[1] * _cos;
 
             var bx = ac[0] * _cos - ac[1] * _sin;
-            var by = ac[1] * _sin + ac[1] * _cos;
+            var by = ac[0] * _sin + ac[1] * _cos;
 
             var cx = bc[0] * _cos - bc[1] * _sin;
-            var cy = bc[1] * _sin + bc[1] * _cos;
+            var cy = bc[0] * _sin + bc[1] * _cos;
 
 
             var _ab = [ax, ay];
