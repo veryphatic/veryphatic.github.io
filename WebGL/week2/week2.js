@@ -55,9 +55,9 @@ var week2 = (function(jQuery, ko){
 
         // Define the initial vertices
         vertices = [
-            vec2(-1, -1),
-            vec2(0, 1),
-            vec2(1, -1)
+            vec2(-1, -1.0),
+            vec2(0, 1.0),
+            vec2(1.0, -1.0)
         ];
 
         createData();
@@ -144,7 +144,7 @@ var week2 = (function(jQuery, ko){
         gl.clear( gl.COLOR_BUFFER_BIT );
 
         // Send theta
-        gl.uniform1f(theta, parseFloat(_self.rotation()));
+        gl.uniform1f(theta, parseFloat(_self.rotation()) * Math.PI/180);
 
         // Draw the array
         gl.drawArrays( gl.TRIANGLES, 0, points.length);
