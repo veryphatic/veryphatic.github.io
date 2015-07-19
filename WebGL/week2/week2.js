@@ -118,16 +118,41 @@ var week2 = (function(jQuery, ko){
         // Check for end of recursion
         if (count === 0) {
 
+            if (_self.rotation() == 0) {
+
+                // Rotate the point
+                var _sin = Math.sin(parseFloat(_self.rotation()) * (3.14159265359/180));
+                var _cos = Math.cos(parseFloat(_self.rotation()) * (3.14159265359/180));
 
 
-            createNewPoint(a, b, c);
+                var ax = a[0] * _cos - a[1] * _sin;
+                var ay = a[0] * _sin + a[1] * _cos;
+
+                var bx = b[0] * _cos - b[1] * _sin;
+                var by = b[0] * _sin + b[1] * _cos;
+
+                var cx = c[0] * _cos - c[1] * _sin;
+                var cy = c[0] * _sin + c[1] * _cos;
+
+
+                var _a = [ax, ay];
+                var _b = [bx, by];
+                var _c = [cx, cy];
+
+                createNewPoint(_a, _b, _c);
+
+            }
+            else {
+
+                createNewPoint(a, b, c);
+            }
         }
         else {
-            //bisect the sides
 
             // Rotate the point
-            var _sin = Math.sin(parseFloat(_self.rotation()));
-            var _cos = Math.cos(parseFloat(_self.rotation()));
+            var _sin = Math.sin(parseFloat(_self.rotation()) * (3.14159265359/180));
+            var _cos = Math.cos(parseFloat(_self.rotation()) * (3.14159265359/180));
+
 
 
             var ab = mix( a, b, 0.5 );
