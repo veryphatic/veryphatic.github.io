@@ -13,6 +13,7 @@ var week2 = (function(jQuery, ko){
         canvas,
         program,
         points = [],
+        rotatedPoints = [],
         vertices,
         theta;
 
@@ -61,7 +62,6 @@ var week2 = (function(jQuery, ko){
         ];
 
         createData();
-
     }
 
 
@@ -73,10 +73,12 @@ var week2 = (function(jQuery, ko){
         points = [];
 
         // Create the vertices
-        divideTriangle(vertices[0], vertices[1], vertices[2], parseInt(_self.subDivisions()), parseFloat(_self.rotation()));
+        divideTriangle(vertices[0], vertices[1], vertices[2], parseInt(_self.subDivisions()));
 
-        // Push the data to the gpu and render
-        pushGPU();
+        // Rotate the points
+        rotateThePoints();
+
+
     }
 
 
@@ -84,10 +86,11 @@ var week2 = (function(jQuery, ko){
 
     // Push the data to the GPU and render
     function pushGPU() {
+
         // Create the buffer
         var bufferId = gl.createBuffer();
         gl.bindBuffer(gl.ARRAY_BUFFER, bufferId);
-        gl.bufferData(gl.ARRAY_BUFFER, flatten(points), gl.STATIC_DRAW);
+        gl.bufferData(gl.ARRAY_BUFFER, flatten(rotatedPoints), gl.STATIC_DRAW);
 
         // Create the vPosition
         var vPosition = gl.getAttribLocation(program, "vPosition");
@@ -100,6 +103,7 @@ var week2 = (function(jQuery, ko){
 
         // Render
         render();
+
     }
 
 
@@ -117,87 +121,56 @@ var week2 = (function(jQuery, ko){
 
         // Check for end of recursion
         if (count === 0) {
-
-            if (_self.rotation() == 0) {
-
-                // Rotate the point
-                var _sin = Math.sin(parseFloat(_self.rotation()) * (3.14159265359/180));
-                var _cos = Math.cos(parseFloat(_self.rotation()) * (3.14159265359/180));
-
-
-                var ax = a[0] * _cos - a[1] * _sin;
-                var ay = a[0] * _sin + a[1] * _cos;
-
-                var bx = b[0] * _cos - b[1] * _sin;
-                var by = b[0] * _sin + b[1] * _cos;
-
-                var cx = c[0] * _cos - c[1] * _sin;
-                var cy = c[0] * _sin + c[1] * _cos;
-
-
-                var _a = [ax, ay];
-                var _b = [bx, by];
-                var _c = [cx, cy];
-
-                createNewPoint(_a, _b, _c);
-
-            }
-            else {
-
-                createNewPoint(a, b, c);
-            }
+            createNewPoint(a, b, c);
         }
         else {
-
-            // Rotate the point
-            var _sin = Math.sin(parseFloat(_self.rotation()) * (3.14159265359/180));
-            var _cos = Math.cos(parseFloat(_self.rotation()) * (3.14159265359/180));
-
-
 
             var ab = mix( a, b, 0.5 );
             var ac = mix( a, c, 0.5 );
             var bc = mix( b, c, 0.5 );
 
-
-            // Rotate
-
-            //x′= xcosθ − ysinθ
-            //y′= xsinθ + ycosθ
-
-
-            var ax = ab[0] * _cos - ab[1] * _sin;
-            var ay = ab[0] * _sin + ab[1] * _cos;
-
-            var bx = ac[0] * _cos - ac[1] * _sin;
-            var by = ac[0] * _sin + ac[1] * _cos;
-
-            var cx = bc[0] * _cos - bc[1] * _sin;
-            var cy = bc[0] * _sin + bc[1] * _cos;
-
-
-            var _ab = [ax, ay];
-            var _ac = [bx, by];
-            var _bc = [cx, cy];
-
-
-            // End rotate
-
-
-
             --count;
 
 
-            divideTriangle( a, _ab, _ac, count );
-            divideTriangle( c, _ac, _bc, count );
-            divideTriangle( b, _bc, _ab, count );
-
             // three new triangles
-            //divideTriangle( a, ab, ac, count );
-            //divideTriangle( c, ac, bc, count );
-            //divideTriangle( b, bc, ab, count );
+            divideTriangle( a, ab, ac, count );
+            divideTriangle( c, ac, bc, count );
+            divideTriangle( b, bc, ab, count );
         }
     }
+
+
+
+
+    function rotateThePoints() {
+
+        rotatedPoints = [];
+
+
+        for (var i= 0, len=points.length; i<len; i++) {
+            var newPoint = rotatePoints(points[i][0], points[i][1], parseFloat(_self.rotation()));
+            rotatedPoints[i] = [newPoint.x, newPoint.y];
+        }
+
+
+        // Push the data to the gpu and render
+        pushGPU();
+
+    }
+
+
+
+
+
+    function rotatePoints(x,y,angle){
+        var point = {};
+        var distance = Math.sqrt(x * x + y * y);
+        point.x = x * Math.cos(angle * distance)- y * Math.sin(angle * distance);
+        point.y = x * Math.sin(angle * distance) + y * Math.cos(angle * distance);
+        return point;
+    }
+
+
 
 
 
