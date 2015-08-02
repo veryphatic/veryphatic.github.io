@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>WebGL course - Assignment Week 2</title>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.3.0/knockout-min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <link href="../common/styles.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">WebGL course notes</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="">Nathen Street</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+<div class="container-fluid">
+    <form class="form-horizontal">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>Assignment 2</h1>
+                <p><a href="../index.html"><i class="fa fa-reply"></i> Home</a></p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <canvas id="assignment2" width="500" height="500" class="glCanvas"></canvas>
+            </div>
+
+            <div class="col-sm-5">
+                <h3>Attribute editor</h3>
+
+                <hr />
+
+                <div class="form-group">
+                    <div class="col-sm-2">
+                        <div class="colorSquare" data-bind="style: { 'background-color': red }"></div>
+                    </div>
+                    <div class="col-sm-10">
+                        <label>Red <span data-bind="text: redSlider"></span></label>
+                        <input type="range" min="0" max="255"  data-bind="value: redSlider" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-2">
+                        <div class="colorSquare" data-bind="style: { 'background-color': green }"></div>
+                    </div>
+                    <div class="col-sm-10">
+                        <label>Green <span data-bind="text: greenSlider"></span></label>
+                        <input type="range" min="0" max="255"  data-bind="value: greenSlider" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-2">
+                        <div class="colorSquare" data-bind="style: { 'background-color': blue }"></div>
+                    </div>
+                    <div class="col-sm-10">
+                        <label>Blue <span data-bind="text: blueSlider"></span></label>
+                        <input type="range" min="0" max="255"  data-bind="value: blueSlider" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-2">
+                        <div class="colorSquare" data-bind="style: { 'background-color': colorMixed }"></div>
+                    </div>
+                    <div class="col-sm-4">
+                        <label>Resulting color</label>
+                    </div>
+                </div>
+
+
+            </div>
+    </form>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+        <h4>Vertex shader</h4>
+        <pre>
+
+        </pre>
+        </div>
+        <div class="col-md-6">
+            <h4>Fragment shader</h4>
+            <pre>
+
+            </pre>
+        </div>
+
+    </div>
+
+
+
+
+</div>
+
+
+
+
+
+<script type="text/javascript" src="../common/webgl-utils.js"></script>
+<script type="text/javascript" src="../common/initShaders2.js"></script>
+<script type="text/javascript" src="../common/MV.js"></script>
+<script type="text/javascript" src="assignment2.js"></script>
+
+
+
+</body>
+</html>
