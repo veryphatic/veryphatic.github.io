@@ -23,7 +23,11 @@ var week2 = (function(jQuery, ko){
         _self = this;
         this.subDivisions = ko.observable(5);
         this.rotation = ko.observable(0);
-        this.reRender = createData;
+        this.isGasket = ko.observable(false);
+
+        this.rotation.subscribe(createData);
+        this.subDivisions.subscribe(createData);
+        this.isGasket.subscribe(createData);
     }
 
 
@@ -38,7 +42,7 @@ var week2 = (function(jQuery, ko){
         ko.applyBindings(new viewModel());
 
         // Grab the canvas
-        canvas = document.getElementById("glCanvas");
+        canvas = document.getElementById("assignment1");
 
         // Create GL context
         gl = WebGLUtils.setupWebGL(canvas);
@@ -49,20 +53,19 @@ var week2 = (function(jQuery, ko){
         gl.clearColor(0.0 ,0.0 ,0.0 ,1.0);
 
         // Setup the shaders
-        program = initShaders(gl, "vertex-shader", "fragment-shader");
+        program = initShaders(gl, "vshader.glsl", "fshader.glsl");
         gl.useProgram(program);
 
 
         // Define the initial vertices
         vertices = [
-            vec2(-1, -1.0),
+            vec2(-1.0, -1.0),
             vec2(0, 1.0),
             vec2(1.0, -1.0)
         ];
 
         createData();
     }
-
 
 
 
@@ -73,7 +76,7 @@ var week2 = (function(jQuery, ko){
         points = [];
 
         // Create the vertices
-        divideTriangle(vertices[0], vertices[1], vertices[2], parseInt(_self.subDivisions()));
+        subdivideTriangle(vertices[0], vertices[1], vertices[2], parseInt(_self.subDivisions()));
 
         // Push the data to the GPU buffer object
         pushGPU();
@@ -112,8 +115,10 @@ var week2 = (function(jQuery, ko){
 
 
 
-    // Divide the triange
-    function divideTriangle(a, b, c, count) {
+
+
+    // Subdivision
+    function subdivideTriangle(a, b, c, count) {
 
         // Check for end of recursion
         if (count === 0) {
@@ -129,11 +134,14 @@ var week2 = (function(jQuery, ko){
 
 
             // three new triangles
-            divideTriangle( a, ab, ac, count );
-            divideTriangle( c, ac, bc, count );
-            divideTriangle( b, bc, ab, count );
+            subdivideTriangle( a, ab, ac, count );
+            subdivideTriangle( c, ac, bc, count );
+            subdivideTriangle( b, bc, ab, count );
+            if (!_self.isGasket()) subdivideTriangle( ab, ac, bc, count );
         }
     }
+
+
 
 
 
