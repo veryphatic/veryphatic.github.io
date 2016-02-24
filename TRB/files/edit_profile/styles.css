@@ -2006,3 +2006,24 @@
   width:110px;
   white-space:nowrap;
 }
+#u188 {
+  position:absolute;
+  left:290px;
+  top:310px;
+  width:200px;
+  height:100px;
+}
+#u188_img {
+  position:absolute;
+  left:0px;
+  top:0px;
+  width:200px;
+  height:100px;
+}
+#u189 {
+  position:absolute;
+  left:2px;
+  top:42px;
+  width:196px;
+  word-wrap:break-word;
+}
