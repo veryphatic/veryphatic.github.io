@@ -1,0 +1,1 @@
+<h4>Please select the act and scene to analyse</h4><div class="actions" ng-repeat="acts in $ctrl.acts"><p>Act {{$index + 1}} Scene<a class="scenes" ng-repeat="scene in acts" ng-click="$ctrl.parent.showEmotionsByAct($parent.$index, $index)">{{$index + 1}}</a></p></div>
